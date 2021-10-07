@@ -5,16 +5,50 @@
 
 trigger:
 - master
+- feat/azure-pipelines
 
 pool: Default
 
 variables:
   buildConfiguration: 'Release'
 
-steps:
-- script: dotnet build --configuration $(buildConfiguration)
-  displayName: 'dotnet build $(buildConfiguration)'
-- script: python src/example.py
-  displayName: python example script
-- script: cd src && pip install -r requirements.txt
-  displayName: install requirements
+resources:
+  containers:
+  - container: python
+    image: python
+
+stages:
+- stage: Build
+  jobs:
+  - job: BuildJob
+    steps:
+    - script: |
+      echo Building!
+      cd src
+      install -r requirements.txt
+      export AWS_ACCESS_KEY_ID=ASIAIOSFODNN7EXAMPLE
+      export AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+      export AWS_SESSION_TOKEN=AQoDYXdzEJr...<remainder of security token>
+      aws ec2 describe-instances --region us-west-1
+- stage: Test
+  jobs:
+  - job: TestOnWindows
+    steps:
+    - script: echo Testing on Windows!
+  - job: TestOnLinux
+    steps:
+    - script: echo Testing on Linux!
+- stage: Deploy
+  jobs:
+  - job: Deploy
+    steps:
+    - script: echo Deploying the code!
+    - script: 
+
+# steps:
+# - script: dotnet build --configuration $(buildConfiguration)
+#   displayName: 'dotnet build $(buildConfiguration)'
+# - script: python src/example.py
+#   displayName: python example script
+# - script: cd src && pip install -r requirements.txt
+#   displayName: install requirements
