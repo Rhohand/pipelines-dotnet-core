@@ -23,12 +23,12 @@ stages:
   - job: BuildJob
     steps:
     - script: echo Building!
-    - script: cd src
-    - script: install -r requirements.txt
     - script: export AWS_ACCESS_KEY_ID=ASIAIOSFODNN7EXAMPLE
     - script: export AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
     - script: export AWS_SESSION_TOKEN=AQoDYXdzEJr...<remainder of security token>
     - script: aws ec2 describe-instances --region us-west-1
+    - script: cd src
+    - script: install -r requirements.txt
 - stage: Test
   jobs:
   - job: TestOnWindows
