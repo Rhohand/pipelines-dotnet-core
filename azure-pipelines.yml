@@ -16,3 +16,5 @@ steps:
   displayName: 'dotnet build $(buildConfiguration)'
 - script: python src/example.py
   displayName: python example script
+- script: cd src && pip install -r requirements.txt
+  displayName: install requirements
